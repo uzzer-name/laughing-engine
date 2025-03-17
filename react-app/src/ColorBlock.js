@@ -5,25 +5,31 @@ const ColorBlock = () => {
   const colors = ['#99ffcc', '#8cf2cc', '#80e6cc', '#73d9cc', '#66cccc'];
   //const colors = ['#211C84', '#4D55CC', '#7A73D1', '#B5A8D5'];
   const [colorIndex, setColorIndex] = useState(0);
-  const [hoverIndex, setHoverIndex] = useState(colorIndex);
+  const [baseColorIndex, setBaseColorIndex] = useState(0);
 
   const changeColor = () => {
-    setColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
+    const newIndex = (baseColorIndex + 1) % colors.length;
+    setBaseColorIndex(newIndex);
+    setColorIndex(newIndex);
   };
 
   useEffect(() => {
-    console.log(`Current color is: ${colors[colorIndex]}`);
-  }, [colorIndex]);
+  }, [baseColorIndex]);
 
   return (
     <div className="color-block-container">
-      <div className="color-block" style={{ backgroundColor: colors[colorIndex] }} />
+      <div className="color-block" style={{ backgroundColor: colors[baseColorIndex] }} />
       <button
         className="color-button"
-        style={{ backgroundColor: colors[hoverIndex] }}
+        style={{ backgroundColor: colors[colorIndex] }}
         onClick={changeColor}
-        onMouseEnter={() => setHoverIndex((colorIndex + 1) % colors.length)}
-        onMouseLeave={() => setHoverIndex(colorIndex)}
+        onMouseEnter={() => setColorIndex((baseColorIndex + 1) % colors.length)}
+        onMouseLeave={() => setColorIndex(baseColorIndex)}
+        onMouseDown={() => {
+          const newIndex = (baseColorIndex + 1) % colors.length;
+          setBaseColorIndex(newIndex);
+          setColorIndex(newIndex);
+        }}
       >
         Change Color
       </button>
